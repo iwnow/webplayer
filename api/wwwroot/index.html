@@ -10,5 +10,23 @@
   <div>
     hello static file!
   </div>
+  <script>
+    let jsonGetter = (url) => new Promise((res, rej) => {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      fetch(url, {
+        headers: myHeaders
+      })
+        .then(r => r.json())
+        .then(r => res(r))
+        .catch(e => rej(e));
+    });
+
+    jsonGetter('api/values').then(values => {
+      document.body.innerHTML += '<br /> this is from api : ' + values.join();
+    })
+    .catch(console.error);
+    
+  </script>
 </body>
 </html>
