@@ -1,0 +1,8 @@
+/Users/iwnow/Projects/backend/api/bin/Debug/netcoreapp1.1/api.deps.json
+/Users/iwnow/Projects/backend/api/bin/Debug/netcoreapp1.1/api.runtimeconfig.json
+/Users/iwnow/Projects/backend/api/bin/Debug/netcoreapp1.1/api.runtimeconfig.dev.json
+/Users/iwnow/Projects/backend/api/bin/Debug/netcoreapp1.1/api.dll
+/Users/iwnow/Projects/backend/api/bin/Debug/netcoreapp1.1/api.pdb
+/Users/iwnow/Projects/backend/api/obj/Debug/netcoreapp1.1/api.AssemblyInfo.cs
+/Users/iwnow/Projects/backend/api/obj/Debug/netcoreapp1.1/api.dll
+/Users/iwnow/Projects/backend/api/obj/Debug/netcoreapp1.1/api.pdb
