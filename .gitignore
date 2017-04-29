@@ -3,4 +3,4 @@ obj/
 node_modules
 dist
 .awcache
-audio
+*.mp3

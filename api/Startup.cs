@@ -33,6 +33,7 @@ namespace api
         {
             // Add framework services.
             services.AddMvc();
+            services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddDbContext<PlaylistDbContext>(opt => opt.UseInMemoryDatabase());
 
