@@ -4,29 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>AspNetCore</title>
+  <title>PLAY</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-  <div>
-    hello static file!
-  </div>
-  <script>
-    let jsonGetter = (url) => new Promise((res, rej) => {
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      fetch(url, {
-        headers: myHeaders
-      })
-        .then(r => r.json())
-        .then(r => res(r))
-        .catch(e => rej(e));
-    });
+  <div id="app">loading...</div>
 
-    jsonGetter('api/values').then(values => {
-      document.body.innerHTML += '<br /> this is from api : ' + values.join();
-    })
-    .catch(console.error);
-    
-  </script>
+  <script async src="scripts/bundle.js"></script> 
+
 </body>
 </html>

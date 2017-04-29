@@ -10,6 +10,10 @@ using Microsoft.Extensions.Logging;
 
 namespace api
 {
+    using Services;
+    using Models;
+    using Microsoft.EntityFrameworkCore;
+
     public class Startup
     {
         public Startup(IHostingEnvironment env)
@@ -29,16 +33,21 @@ namespace api
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddDbContext<PlaylistDbContext>(opt => opt.UseInMemoryDatabase());
+
+            services.AddScoped<IPlaylistService, PlaylistService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            loggerFactory
+                .AddConsole(Configuration.GetSection("Logging"))
+                .AddDebug();
 
-            //app.UseDefaultFiles();
-            //app.UseStaticFiles();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseMvcWithDefaultRoute();
         }
