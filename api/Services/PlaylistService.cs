@@ -9,6 +9,7 @@ using System.IO;
 namespace api.Services
 {
   using Microsoft.AspNetCore.Hosting;
+  using Microsoft.EntityFrameworkCore;
 
   public class PlaylistService : IPlaylistService, IDisposable
   {
@@ -19,16 +20,25 @@ namespace api.Services
       _env = env;
     }
 
-    async Task IPlaylistService.AddTrackAsync(IFormFile track, Track model)
+    async Task<Track> IPlaylistService.AddTrackAsync(IFormFile track)
     {
-      model.Created = DateTime.Now;
-      var t = _context.Tracks.Add(model);
+      if (track == null)
+        throw new ArgumentNullException(nameof(track));
+
+      var model = new Track {
+        Name = track.FileName,
+        PathName = $"{Guid.NewGuid().ToString("N").Substring(0, 10)}{track.FileName}",
+        Created = DateTime.Now
+      };
+      
+      _context.Tracks.Add(model);
       await _context.SaveChangesAsync();
       
       var path = Path.Combine(_env.WebRootPath, "audio", model.PathName);
       using (var fs = new FileStream(path, FileMode.Create)) {
         await track.CopyToAsync(fs);
       }
+      return model;
     }
 
     async Task<int> IPlaylistService.AddTracksAsync(IEnumerable<Track> tracks)
@@ -36,9 +46,15 @@ namespace api.Services
       throw new NotImplementedException();
     }
 
-    Task IPlaylistService.DeleteTrackById(long id)
+    async Task IPlaylistService.DeleteTrackById(long id)
     {
-      throw new NotImplementedException();
+      var toDelete = await _context.Tracks.FirstOrDefaultAsync(i => i.Id == id);
+      if (toDelete == null)
+        return;
+      var pathName = toDelete.PathName;
+      _context.Tracks.Remove(toDelete);
+      await _context.SaveChangesAsync();
+      File.Delete(Path.Combine(_env.WebRootPath, "audio", pathName));
     }
 
     void IDisposable.Dispose()

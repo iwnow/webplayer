@@ -41,6 +41,21 @@ export const api = {
       .then(json => res(json))
       .catch(rej);
     });
+  },
+  deleteTrackById: (id:number):Promise<boolean> => {
+    return new Promise<boolean>((res,rej) => {
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      headers.append("Accept", "application/json",);
+      fetchEx('/api/playlist', {
+        method: 'DELETE',
+        headers: headers,
+        body: JSON.stringify(id)
+      })
+      .then(response => response.json())
+      .then(json => res(json))
+      .catch(rej);
+    });
   }
 }
 

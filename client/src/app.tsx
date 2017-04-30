@@ -8,7 +8,8 @@ const render = () =>
   ReactDOM.render(
     <PlayerComponent 
       getTrackList={api.getTrackList} 
-      uploadNewTracks={api.uploadNewTracks} />, 
+      uploadNewTracks={api.uploadNewTracks}
+      deleteTrack={(track) => api.deleteTrackById(track.id)} />, 
     document.getElementById('app'));
 
 render();

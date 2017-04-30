@@ -13,6 +13,7 @@ namespace api
     using Services;
     using Models;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.SqlServer;
 
     public class Startup
     {
@@ -35,7 +36,8 @@ namespace api
             services.AddMvc();
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddDbContext<PlaylistDbContext>(opt => opt.UseInMemoryDatabase());
+            //services.AddDbContext<PlaylistDbContext>(opt => opt.UseInMemoryDatabase());
+            services.AddDbContext<PlaylistDbContext>(opt => opt.UseSqlServer(Configuration.GetValue<string>("db")));
 
             services.AddScoped<IPlaylistService, PlaylistService>();
         }

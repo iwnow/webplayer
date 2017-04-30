@@ -8,7 +8,9 @@ namespace api.Models
   public class PlaylistDbContext : DbContext {
     public DbSet<Track> Tracks {get;set;}
 
-    public PlaylistDbContext(DbContextOptions<PlaylistDbContext> options) : base(options) { }
+    public PlaylistDbContext(DbContextOptions<PlaylistDbContext> options) : base(options) {
+      
+     }
 
   }
 }

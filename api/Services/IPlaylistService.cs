@@ -8,7 +8,7 @@ namespace api.Services
 
   public interface IPlaylistService {
     Task<int> AddTracksAsync(IEnumerable<Track> tracks);
-    Task AddTrackAsync(IFormFile track, Track model);
+    Task<Track> AddTrackAsync(IFormFile track);
     Task<Track> GetTrackByIdAsync(long id);
     Task DeleteTrackById(long id);
     IQueryable<Track> GetPlaylist();

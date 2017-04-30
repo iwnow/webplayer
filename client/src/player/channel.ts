@@ -1,6 +1,6 @@
 type hcb = (data:any) => void;
 
-const channel = () => {
+const channel = <T>() => {
   
   let handlers: hcb[] = [];
   
@@ -11,7 +11,7 @@ const channel = () => {
     }
   }
 
-  const push = (data:any) => handlers.forEach( i => i(data));
+  const push = (data:T) => handlers.forEach( i => i(data));
 
   return {
     subscribe,
@@ -19,8 +19,13 @@ const channel = () => {
   }
 }
 
-export const createChannel = () => channel()
-export interface IChannel {
+export const createChannel = <T>() => channel<T>()
+export interface IChannel<T> {
   subscribe: (callback: hcb) => () => void;
-  push: (data:any) => void;
+  push: (data:T) => void;
+}
+
+export enum ChannelPlayerEvent {
+  play = 1,
+  stop
 }

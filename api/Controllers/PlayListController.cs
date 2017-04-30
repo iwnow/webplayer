@@ -13,16 +13,25 @@ namespace api.Controllers
 
 
   public class PlaylistController : Controller {
+    
+#region constructor with inject services
     readonly ILogger _logger;
     readonly IHostingEnvironment _env;
     readonly IPlaylistService _playListService;
     public PlaylistController(ILogger<PlaylistController> logger, 
-      IHostingEnvironment env,
-      IPlaylistService plls) {
+                              IHostingEnvironment env,
+                              IPlaylistService plls) {
       _logger = logger;
       _env = env;
       _playListService = plls;
     }
+
+#endregion
+
+    /* 
+        without catch exceptions 
+        application insights collect statistics
+     */
 
     [HttpGet]
     [Route("api/playlist")]
@@ -34,29 +43,25 @@ namespace api.Controllers
     [HttpPost]
     [Route("api/playlist")]
     public async Task<IActionResult> UploadTrack() {
-      if (Request.Form.Files.Count == 0) {
-        WriteWarning("0 files where found");
+      
+      if (Request.Form == null ||
+          Request.Form.Files == null ||
+          Request.Form.Files.Count == 0) {
+        //no files -> bad req
         return BadRequest();
       }
       
-      try
-      {
-        var file = Request.Form.Files[0];
-        var t = new Track();
-        t.Name = file.FileName;
-        t.PathName = $"{Guid.NewGuid().ToString("N").Substring(0, 8)}_{file.FileName}";
-        await _playListService.AddTrackAsync(file, t);
-        return Json(true);
-      }
-      catch (Exception ex)
-      {
-        WriteWarning(ex.Message);
-        throw;
-      }
+      //add one file (first)
+      await _playListService.AddTrackAsync(Request.Form.Files[0]);
+      return Json(true);
     }
 
-    void WriteWarning(string msg) {
-      _logger.LogWarning(msg);
+    [HttpDelete]
+    [Route("api/playlist")]
+    public async Task<IActionResult> DeleteTrack([FromBody] long id) {
+      _logger.LogWarning(id.ToString());
+      await _playListService.DeleteTrackById(id);
+      return Json(true);
     }
   }
 }
